@@ -3,6 +3,11 @@ from PIL import Image
 import pandas as pd
 import os
 from datetime import datetime
+import numpy as np
+
+from object_detection_app import run_object_detection
+
+
 
 
 def main():
@@ -21,12 +26,13 @@ def save_uploaded_file(directory, file) :
     return st.success('Saved file : {} in {}'.format(file.name,directory))
 
 def main():
-    st.title('파일 업로드 프로젝트')
-    menu = ['Image','CSV','About']
-    choice = st.sidebar.selectbox('메뉴',menu)
+    st.title('Tensorflow Object Detection')
+    
+    menu = ['Object Detection','About']
 
-    if choice == 'Image' :
-        st.subheader('이미지 파일 업로드')
+    choice = st.sidebar.selectbox('메뉴 선택', menu)
+    
+    if choice == 'Object Detection':
 
         # 파일 업로드 코드 작성, 카피앤 페이스트 해서 사용하세요
         image_file = st.file_uploader('이미지를 업로드 하세요', type=['png','jpg','jpeg'])
@@ -43,21 +49,17 @@ def main():
             # print(current_time = current_time.isoformat().replace(':','_'))
             current_time = current_time.isoformat().replace(':','_')
             image_file.name = current_time + '.jpg'
-        
-           
-
-
            
             # 파일을 저장할 수 있도록, 위의 함수를 호출하자.
-            save_uploaded_file('temp',image_file)
-
-            # 파일을 화면에 나오게 
-            img=Image.open(image_file)
-            st.image(img,use_column_width=True)
+            # save_uploaded_file('temp',image_file)
 
 
-
-
+            # 오브젝트 디텍션을 여기서 한다.
+            img = Image.open(image_file)
+            img = np.array(img)
+            #넘파이 어레이를 오브젝트 디텍션 함수에 넘겨준다.
+            run_object_detection(img)
+            
 
 
 if __name__ == '__main__' :
