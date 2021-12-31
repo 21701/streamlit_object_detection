@@ -41,7 +41,9 @@ def main():
             min_score = st.slider('스코어 설정',1, 100,value=50)
 
             st.write('설정된 스코어에 따른 바운딩 박스를 찾습니다.')
-
+            # model_menu = (['ssd_mobilenet_v2','efficientdet'])
+            # choice_model = st.sidebar.selectbox('모델변경', model_menu)
+            
 
             # 프린트문은 디버깅용으로서, 터미널에 출력한다.
             # print(type(image_file))
@@ -66,6 +68,8 @@ def main():
             img = np.array(img)
             #넘파이 어레이를 오브젝트 디텍션 함수에 넘겨준다.
             run_object_detection(img, min_score)
+            
+            
            
 
             

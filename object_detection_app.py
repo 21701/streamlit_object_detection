@@ -37,8 +37,10 @@ def download_model(model_name, model_date):
                                         untar=True)
     return str(model_dir)
 
-
-
+model_menu = (['ssd_mobilenet_v2','efficientdet'])
+choice_model = st.sidebar.selectbox('모델변경', model_menu)
+if choice_model == 'ssd_mobilenet_v2' :
+    pass
 
 
 
@@ -50,19 +52,11 @@ PATH_TO_MODEL_DIR = download_model(MODEL_NAME, MODEL_DATE)
 # model_menu = (['ssd_mobilenet_v2','efficientdet'])
 # select_model = st.sidebar.selectbox('모델변경', model_menu)
 
-# if select_model == 'efficientdet':
-#     MODEL_DATE = '20200711'
-#     MODEL_NAME = 'efficientdet_d0_coco17_tpu-32'
-#     PATH_TO_MODEL_DIR = download_model(MODEL_NAME, MODEL_DATE)
-# elif select_model == 'ssd_mobilenet_v2':
-#     MODEL_DATE = '20200711'
-#     MODEL_NAME = 'ssd_mobilenet_v2_320x320_coco17_tpu-8'
-#     PATH_TO_MODEL_DIR = download_model(MODEL_NAME, MODEL_DATE)
-# else : 
-#     st.success('모델선택')
+
 
 
 def load_model(model_dir) :
+    
 
     model_full_dir = model_dir + "/saved_model"
     
