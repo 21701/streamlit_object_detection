@@ -37,11 +37,18 @@ def main():
         # 파일 업로드 코드 작성, 카피앤 페이스트 해서 사용하세요
         image_file = st.file_uploader('이미지를 업로드 하세요', type=['png','jpg','jpeg'])
         if image_file is not None :
+            
+            min_score = st.slider('스코어 설정',1, 100,value=50)
+
+            st.write('설정된 스코어에 따른 바운딩 박스를 찾습니다.')
+
+
             # 프린트문은 디버깅용으로서, 터미널에 출력한다.
-            print(type(image_file))
-            print(image_file.name)
-            print(image_file.size)
-            print(image_file.type)
+            # print(type(image_file))
+            # print(image_file.name)
+            # print(image_file.size)
+            # print(image_file.type)
+            
 
             # 파일명을, 현재시간의 조합으로 해서 만들어 보세요
             current_time = datetime.now()
@@ -58,7 +65,7 @@ def main():
             img = Image.open(image_file)
             img = np.array(img)
             #넘파이 어레이를 오브젝트 디텍션 함수에 넘겨준다.
-            run_object_detection(img)
+            run_object_detection(img, min_score)
            
 
             
