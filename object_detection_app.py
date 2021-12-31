@@ -71,7 +71,7 @@ def show_inference(detection_model, image_np) :
     # We're only interested in the first num_detections.
     num_detections = int(detections.pop('num_detections'))
     detections = {key: value[0, :num_detections].numpy()
-                   for key, value in detections.items()}
+                for key, value in detections.items()}
     detections['num_detections'] = num_detections
 
     # detection_classes should be ints.
@@ -79,23 +79,38 @@ def show_inference(detection_model, image_np) :
     
     # print(detections)
     image_np_with_detections = image_np.copy()
-
+    st.write('score_thresh를 변경할수있습니다.')
+    score_thres = st.slider('min_score_thresh',.1, .50,value=.30)
     viz_utils.visualize_boxes_and_labels_on_image_array(
-          image_np_with_detections,
-          detections['detection_boxes'],
-          detections['detection_classes'],
-          detections['detection_scores'],
-          category_index,
-          use_normalized_coordinates=True,
-          max_boxes_to_draw=200,
-          min_score_thresh=.50,
-          agnostic_mode=False)
+        image_np_with_detections,
+        detections['detection_boxes'],
+        detections['detection_classes'],
+        detections['detection_scores'],
+        category_index,
+        use_normalized_coordinates=True,
+        max_boxes_to_draw=200,
+        min_score_thresh=score_thres,
+        agnostic_mode=False)
 
     img = Image.fromarray(image_np_with_detections)
     st.image(image_np_with_detections,use_column_width=True)
 
 def run_object_detection(image_np) :
     show_inference(detection_model, image_np)
+
+    # btn = st.button('다시')
+  
+            
+    
+
+
+
+
+
+
+
+
+    
 
 # 쓰레쉬 홀드  슬라이드로 바꾸기 min _score_thresh
 # 모델 변경 하는것 

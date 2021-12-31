@@ -59,6 +59,8 @@ def main():
             img = np.array(img)
             #넘파이 어레이를 오브젝트 디텍션 함수에 넘겨준다.
             run_object_detection(img)
+           
+
             
 
 
