@@ -37,13 +37,35 @@ def download_model(model_name, model_date):
                                         untar=True)
     return str(model_dir)
 
+
+
+
+
+
+
 MODEL_DATE = '20200711'
 MODEL_NAME = 'ssd_mobilenet_v2_320x320_coco17_tpu-8'
 PATH_TO_MODEL_DIR = download_model(MODEL_NAME, MODEL_DATE)
 
-def load_model(model_dir) :
-    model_full_dir = model_dir + "/saved_model"
+# model_menu = (['ssd_mobilenet_v2','efficientdet'])
+# select_model = st.sidebar.selectbox('모델변경', model_menu)
 
+# if select_model == 'efficientdet':
+#     MODEL_DATE = '20200711'
+#     MODEL_NAME = 'efficientdet_d0_coco17_tpu-32'
+#     PATH_TO_MODEL_DIR = download_model(MODEL_NAME, MODEL_DATE)
+# elif select_model == 'ssd_mobilenet_v2':
+#     MODEL_DATE = '20200711'
+#     MODEL_NAME = 'ssd_mobilenet_v2_320x320_coco17_tpu-8'
+#     PATH_TO_MODEL_DIR = download_model(MODEL_NAME, MODEL_DATE)
+# else : 
+#     st.success('모델선택')
+
+
+def load_model(model_dir) :
+
+    model_full_dir = model_dir + "/saved_model"
+    
     # Load saved model and build the detection function
     detection_model = tf.saved_model.load(model_full_dir)
     return detection_model
@@ -57,7 +79,7 @@ detection_model = load_model(PATH_TO_MODEL_DIR)
 # print(detection_model.signatures['serving_default'].output_shapes)
 
 
-def show_inference(detection_model, image_np) :
+def show_inference(detection_model, image_np, min_score) :
     # The input needs to be a tensor, convert it using `tf.convert_to_tensor`.
     input_tensor = tf.convert_to_tensor(image_np)
     # The model expects a batch of images, so add an axis with `tf.newaxis`.
@@ -79,8 +101,11 @@ def show_inference(detection_model, image_np) :
     
     # print(detections)
     image_np_with_detections = image_np.copy()
-    st.write('score_thresh를 변경할수있습니다.')
-    score_thres = st.slider('min_score_thresh',.1, .50,value=.30)
+
+    # st.write('score_thresh를 변경할수있습니다.')
+    # score_thres = st.slider('min_score_thresh',.1, .50,value=.30)
+   
+
     viz_utils.visualize_boxes_and_labels_on_image_array(
         image_np_with_detections,
         detections['detection_boxes'],
@@ -89,16 +114,18 @@ def show_inference(detection_model, image_np) :
         category_index,
         use_normalized_coordinates=True,
         max_boxes_to_draw=200,
-        min_score_thresh=score_thres,
+        min_score_thresh=(min_score / 100),
         agnostic_mode=False)
+       
 
     img = Image.fromarray(image_np_with_detections)
     st.image(image_np_with_detections,use_column_width=True)
 
-def run_object_detection(image_np) :
-    show_inference(detection_model, image_np)
+def run_object_detection(image_np, min_score) :
+    show_inference(detection_model, image_np, min_score)
+    
 
-    # btn = st.button('다시')
+    
   
             
     
